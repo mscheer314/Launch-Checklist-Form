@@ -12,21 +12,39 @@
 <img src="${}">
 */
 window.addEventListener("load", () => {
-   let form  = document.querySelector("form");
-   let pilotNameTextField = document.querySelector("input[name=pilotName]");
-   let copilotNameTextField = document.querySelector("input[name=copilotName]");
-   let fuelLevelTextField = document.querySelector("input[name=fuelLevel]");
-   let cargoMassTextField = document.querySelector("input[name=fuelLevel]");
+    let form = document.querySelector("form");
+    let pilotNameTextField = document.querySelector("input[name=pilotName]");
+    let copilotNameTextField = document.querySelector(
+        "input[name=copilotName]"
+    );
+    let fuelLevelTextField = document.querySelector("input[name=fuelLevel]");
+    let cargoMassTextField = document.querySelector("input[name=fuelLevel]");
 
-   form.addEventListener("submit", (event) => {
-      if (
-         pilotNameTextField.value === "" ||
-         copilotNameTextField.value === "" ||
-         fuelLevelTextField.value === "" ||
-         cargoMassTextField.value === ""
-         ) {
-         alert("All fields required.");
-         event.preventDefault();
-      }
-   })  
-})
+    form.addEventListener("submit", (event) => {
+        if (
+            pilotNameTextField.value === "" ||
+            copilotNameTextField.value === "" ||
+            fuelLevelTextField.value === "" ||
+            cargoMassTextField.value === ""
+        ) {
+            alert("All fields required.");
+            event.preventDefault();
+        }
+        if (!isNaN(pilotNameTextField.value)) {
+            alert("Pilot Name must not be a number.");
+            event.preventDefault();
+        }
+        if (!isNaN(copilotNameTextField.value)) {
+           alert("Co-pilot Name must not be a number.");
+           event.preventDefault();
+        }
+        if (isNaN(fuelLevelTextField.value)) {
+           alert("Fuel Leve must be a number.");
+           event.preventDefault();
+        }
+        if (isNaN(cargoMassTextField.value)) {
+           alert("Cargo Mass must be a number.");
+           event.preventDefault();
+        }
+    });
+});
