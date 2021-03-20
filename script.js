@@ -11,3 +11,22 @@
 </ol>
 <img src="${}">
 */
+window.addEventListener("load", () => {
+   let form  = document.querySelector("form");
+   let pilotNameTextField = document.querySelector("input[name=pilotName]");
+   let copilotNameTextField = document.querySelector("input[name=copilotName]");
+   let fuelLevelTextField = document.querySelector("input[name=fuelLevel]");
+   let cargoMassTextField = document.querySelector("input[name=fuelLevel]");
+
+   form.addEventListener("submit", (event) => {
+      if (
+         pilotNameTextField.value === "" ||
+         copilotNameTextField.value === "" ||
+         fuelLevelTextField.value === "" ||
+         cargoMassTextField.value === ""
+         ) {
+         alert("All fields required.");
+         event.preventDefault();
+      }
+   })  
+})
