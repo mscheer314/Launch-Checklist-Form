@@ -12,6 +12,9 @@
 */
 
 window.addEventListener("load", () => {
+
+   loadDestination();
+
     let form = document.querySelector("form");
 
     form.addEventListener("submit", (event) => {
@@ -47,6 +50,15 @@ window.addEventListener("load", () => {
         );
     });
 });
+
+function loadDestination() {
+   fetch("https://handlers.education.launchcode.org/static/planets.json")
+   .then((response) => {
+      response.json().then((json) => {
+         console.log(json);
+      })
+   })
+}
 
 function checkForInput(event, pilot, copilot, fuel, cargo) {
    console.log("in checkforInput: ", pilot.value);
