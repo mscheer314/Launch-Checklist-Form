@@ -12,8 +12,7 @@
 */
 
 window.addEventListener("load", () => {
-
-   loadDestination();
+    loadDestination();
 
     let form = document.querySelector("form");
 
@@ -52,16 +51,34 @@ window.addEventListener("load", () => {
 });
 
 function loadDestination() {
-   fetch("https://handlers.education.launchcode.org/static/planets.json")
-   .then((response) => {
-      response.json().then((json) => {
-         console.log(json);
-      })
-   })
+    fetch("https://handlers.education.launchcode.org/static/planets.json").then(
+        (response) => {
+            response.json().then((json) => {
+                // select a random element of the response to set as the destination
+                let destination =
+                    json[Math.floor(Math.random() * json.length)];
+                    console.log(destination);
+
+                const missionTarget = document.getElementById("missionTarget");
+                missionTarget.innerHTML = 
+                `
+                <h2>Mission Destination</h2>
+               <ol>
+                  <li>Name: ${destination.name}</li>
+                  <li>Diameter: ${destination.diameter}</li>
+                  <li>Star: ${destination.star}</li>
+                  <li>Distance from Earth: ${destination.distance}</li>
+                  <li>Number of Moons: ${destination.moons}</li>
+               </ol>
+               <img src="${destination.image}">
+                `
+            });
+        }
+    );
 }
 
 function checkForInput(event, pilot, copilot, fuel, cargo) {
-   console.log("in checkforInput: ", pilot.value);
+    console.log("in checkforInput: ", pilot.value);
     if (
         pilot.value === "" ||
         copilot.value === "" ||
@@ -89,7 +106,13 @@ function checkForInput(event, pilot, copilot, fuel, cargo) {
     }
 }
 
-function confirmFuelAndCargoMeetRequirements(event, pilot, copilot, fuel, cargo) {
+function confirmFuelAndCargoMeetRequirements(
+    event,
+    pilot,
+    copilot,
+    fuel,
+    cargo
+) {
     const minFuelLevel = 10000;
     const maxCargo = 10000;
     if (fuel.value < minFuelLevel) {
