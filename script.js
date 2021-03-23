@@ -127,7 +127,9 @@ function confirmFuelAndCargoMeetRequirements(
 function setLaunchStatus(input, event, pilot, copilot) {
     const launchStatus = document.getElementById("launchStatus");
 
-    if (!input === "allGood") {
+    console.log("input: ", input)
+    if (input !== "allGood") {
+        console.log("in notAllGood");
         launchStatus.innerHTML = "Shuttle not ready for launch";
         launchStatus.style.color = "#ff0000";
         if (input === "fuel") {
@@ -149,6 +151,5 @@ function setLaunchStatus(input, event, pilot, copilot) {
     pilotStatus.innerHTML = `${pilot.value} Ready`;
     copilotStatus.innerHTML = `${copilot.value} Ready`;
 
-    console.log("right by preventDefault()");
     event.preventDefault();
 }
