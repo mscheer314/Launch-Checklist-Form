@@ -30,22 +30,22 @@ window.addEventListener("load", () => {
             "input[name=fuelLevel]"
         );
         const cargoMassTextField = document.querySelector(
-            "input[name=fuelLevel]"
+            "input[name=cargoMass]"
         );
 
         checkForInput(
             event,
-            pilotNameTextField,
-            copilotNameTextField,
-            fuelLevelTextField,
-            cargoMassTextField
+            pilotNameTextField.value,
+            copilotNameTextField.value,
+            fuelLevelTextField.value,
+            cargoMassTextField.value
         );
         confirmFuelAndCargoMeetRequirements(
             event,
-            pilotNameTextField,
-            copilotNameTextField,
-            fuelLevelTextField,
-            cargoMassTextField
+            pilotNameTextField.value,
+            copilotNameTextField.value,
+            fuelLevelTextField.value,
+            cargoMassTextField.value
         );
     });
 });
@@ -78,31 +78,36 @@ function loadDestination() {
 }
 
 function checkForInput(event, pilot, copilot, fuel, cargo) {
-    console.log("in checkforInput: ", pilot.value);
     if (
-        pilot.value === "" ||
-        copilot.value === "" ||
-        fuel.value === "" ||
-        cargo.value === ""
+        pilot === "" ||
+        copilot === "" ||
+        fuel === "" ||
+        cargo === ""
     ) {
+        resetLaunchMessage();
         alert("All fields required.");
         event.preventDefault();
     }
-    if (!isNaN(pilot.value)) {
+    if (!isNaN(pilot)) {
+        resetLaunchMessage();
         alert("Pilot Name must not be a number.");
         event.preventDefault();
     }
-    if (!isNaN(copilot.value)) {
+    if (!isNaN(copilot)) {
+        resetLaunchMessage();
         alert("Co-pilot Name must not be a number.");
         event.preventDefault();
     }
-    if (isNaN(fuel.value)) {
-        alert("Fuel Leve must be a number.");
+    if (isNaN(fuel)) {
+        resetLaunchMessage();
+        alert("Fuel Level must be a number.");
         event.preventDefault();
     }
-    if (isNaN(cargo.value)) {
+    if (isNaN(cargo)) {
+        
         alert("Cargo Mass must be a number.");
         event.preventDefault();
+        resetLaunchMessage();
     }
 }
 
@@ -113,15 +118,28 @@ function confirmFuelAndCargoMeetRequirements(
     fuel,
     cargo
 ) {
+    console.log("cargo: ", cargo);
+    console.log("fuel: ", fuel);
     const minFuelLevel = 10000;
     const maxCargo = 10000;
-    if (fuel.value < minFuelLevel) {
+    if (Number(fuel) < minFuelLevel) {
+        console.log("in setLaunchStatus for fuel");
         setLaunchStatus("fuel", event, pilot, copilot);
-    } else if (cargo.value > maxCargo) {
+    } else if (Number(cargo) > maxCargo) {
+        console.log("in setLaunchStatus for cargo");
         setLaunchStatus("cargo", event, pilot, copilot);
     } else {
         setLaunchStatus("allGood", event, pilot, copilot);
     }
+}
+
+function resetLaunchMessage() {
+    const launchStatus = document.getElementById("launchStatus");
+    launchStatus.innerHTML = "Awaiting Information Before Launch";
+    const fuelStatus = document.getElementById("fuelStatus");
+    fuelStatus.innerHTML = "";
+    const cargoStatus = document.getElementById("cargoStatus");
+    cargoStatus.innerHTML = "";
 }
 
 function setLaunchStatus(input, event, pilot, copilot) {
@@ -148,8 +166,8 @@ function setLaunchStatus(input, event, pilot, copilot) {
     const pilotStatus = document.getElementById("pilotStatus");
     const copilotStatus = document.getElementById("copilotStatus");
 
-    pilotStatus.innerHTML = `${pilot.value} Ready`;
-    copilotStatus.innerHTML = `${copilot.value} Ready`;
+    pilotStatus.innerHTML = `${pilot} Ready`;
+    copilotStatus.innerHTML = `${copilot} Ready`;
 
     event.preventDefault();
 }
