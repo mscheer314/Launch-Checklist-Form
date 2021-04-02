@@ -17,8 +17,7 @@ window.addEventListener("load", () => {
     let form = document.querySelector("form");
 
     form.addEventListener("submit", (event) => {
-        const faultyItemsDiv = document.getElementById("faultyItems");
-        faultyItemsDiv.style.visibility = "visible";
+        document.getElementById("faultyItems").style.visibility = "visible";
 
         const pilotNameTextField = document.querySelector(
             "input[name=pilotName]"
@@ -40,13 +39,6 @@ window.addEventListener("load", () => {
             fuelLevelTextField.value,
             cargoMassTextField.value
         );
-        confirmFuelAndCargoMeetRequirements(
-            event,
-            pilotNameTextField.value,
-            copilotNameTextField.value,
-            fuelLevelTextField.value,
-            cargoMassTextField.value
-        );
     });
 });
 
@@ -56,7 +48,7 @@ function loadDestination() {
             response.json().then((json) => {
                 // select a random element of the response to set as the destination
                 let destination =
-                    json[Math.floor(Math.random() * json.length)];
+                json[Math.floor(Math.random() * json.length)];
                     console.log(destination);
 
                 const missionTarget = document.getElementById("missionTarget");
@@ -78,6 +70,7 @@ function loadDestination() {
 }
 
 function checkForInput(event, pilot, copilot, fuel, cargo) {
+    // combine into else ifs
     if (
         pilot === "" ||
         copilot === "" ||
@@ -88,27 +81,35 @@ function checkForInput(event, pilot, copilot, fuel, cargo) {
         alert("All fields required.");
         event.preventDefault();
     }
-    if (!isNaN(pilot)) {
+    else if (!isNaN(pilot)) {
         resetLaunchMessage();
         alert("Pilot Name must not be a number.");
         event.preventDefault();
     }
-    if (!isNaN(copilot)) {
+    else if (!isNaN(copilot)) {
         resetLaunchMessage();
         alert("Co-pilot Name must not be a number.");
         event.preventDefault();
     }
-    if (isNaN(fuel)) {
+    else if (isNaN(fuel)) {
         resetLaunchMessage();
         alert("Fuel Level must be a number.");
         event.preventDefault();
     }
-    if (isNaN(cargo)) {
-        
+    else if (isNaN(cargo)) {
+        resetLaunchMessage();
         alert("Cargo Mass must be a number.");
         event.preventDefault();
-        resetLaunchMessage();
+    } else {
+        confirmFuelAndCargoMeetRequirements(
+            event,
+            pilot,
+            copilot,
+            fuel,
+            cargo
+        );
     }
+    
 }
 
 function confirmFuelAndCargoMeetRequirements(
@@ -118,15 +119,11 @@ function confirmFuelAndCargoMeetRequirements(
     fuel,
     cargo
 ) {
-    console.log("cargo: ", cargo);
-    console.log("fuel: ", fuel);
     const minFuelLevel = 10000;
     const maxCargo = 10000;
     if (Number(fuel) < minFuelLevel) {
-        console.log("in setLaunchStatus for fuel");
         setLaunchStatus("fuel", event, pilot, copilot);
     } else if (Number(cargo) > maxCargo) {
-        console.log("in setLaunchStatus for cargo");
         setLaunchStatus("cargo", event, pilot, copilot);
     } else {
         setLaunchStatus("allGood", event, pilot, copilot);
@@ -134,12 +131,11 @@ function confirmFuelAndCargoMeetRequirements(
 }
 
 function resetLaunchMessage() {
-    const launchStatus = document.getElementById("launchStatus");
-    launchStatus.innerHTML = "Awaiting Information Before Launch";
-    const fuelStatus = document.getElementById("fuelStatus");
-    fuelStatus.innerHTML = "";
-    const cargoStatus = document.getElementById("cargoStatus");
-    cargoStatus.innerHTML = "";
+    console.log("before call",launchStatus.innerHTML);
+     document.getElementById("launchStatus").textContent = "Awaiting Information Before Launch";
+
+    document.getElementById("faultyItems").style.visibility = 'hidden';
+    console.log("after call",launchStatus.textContent);
 }
 
 function setLaunchStatus(input, event, pilot, copilot) {
@@ -148,26 +144,21 @@ function setLaunchStatus(input, event, pilot, copilot) {
     console.log("input: ", input)
     if (input !== "allGood") {
         console.log("in notAllGood");
-        launchStatus.innerHTML = "Shuttle not ready for launch";
+        launchStatus.textContent = "Shuttle not ready for launch";
         launchStatus.style.color = "#ff0000";
         if (input === "fuel") {
-            const fuelStatus = document.getElementById("fuelStatus");
-            fuelStatus.innerHTML =
+            document.getElementById("fuelStatus").textContent =
                 "Fuel level is insufficient for the journey.";
         }
         if (input === "cargo") {
-            const cargoStatus = document.getElementById("cargoStatus");
-            cargoStatus.innerHTML =
+            document.getElementById("cargoStatus").textContent =
                 "Cargo has too much mass for liftoff to occur.";
         }
     } else {
-        launchStatus.innerHTML = "Shuttle is ready for launch";
+        launchStatus.textContent = "Shuttle is ready for launch";
     }
-    const pilotStatus = document.getElementById("pilotStatus");
-    const copilotStatus = document.getElementById("copilotStatus");
-
-    pilotStatus.innerHTML = `${pilot} Ready`;
-    copilotStatus.innerHTML = `${copilot} Ready`;
+    document.getElementById("pilotStatus").textContent = `${pilot} Ready`;
+    document.getElementById("copilotStatus").textContent = `${copilot} Ready`;
 
     event.preventDefault();
 }
