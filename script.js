@@ -89,8 +89,10 @@ function setLaunchBox(event, pilot, copilot, fuel, cargo) {
 
     if (fuelText === "The fuel level is sufficient for the journey." && cargoText === "Cargo mass low enough for launch.") {
         launchStatus.textContent = "Shuttle is ready for launch";
+        launchStatus.style.color = "#000000"
     } else {
         launchStatus.textContent = "Shuttle not ready for launch";
+        launchStatus.style.color = "#ff0000";
     }
     event.preventDefault();
 }
