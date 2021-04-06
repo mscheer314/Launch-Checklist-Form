@@ -11,6 +11,8 @@
 <img src="${}">
 */
 
+//TODO make shuttle is ready for launch green
+
 window.addEventListener("load", () => {
 	loadDestination();
 
@@ -19,18 +21,12 @@ window.addEventListener("load", () => {
 	form.addEventListener("submit", (event) => {
 		document.getElementById("faultyItems").style.visibility = "visible";
 
-		const pilotNameTextField = document.querySelector(
-			"input[name=pilotName]"
-		);
+		const pilotNameTextField = document.querySelector("input[name=pilotName]");
 		const copilotNameTextField = document.querySelector(
 			"input[name=copilotName]"
 		);
-		const fuelLevelTextField = document.querySelector(
-			"input[name=fuelLevel]"
-		);
-		const cargoMassTextField = document.querySelector(
-			"input[name=cargoMass]"
-		);
+		const fuelLevelTextField = document.querySelector("input[name=fuelLevel]");
+		const cargoMassTextField = document.querySelector("input[name=cargoMass]");
 
 		checkForInput(
 			event,
@@ -67,34 +63,37 @@ function setLaunchBox(event, pilot, copilot, fuel, cargo) {
 	const minFuelLevel = 10000;
 	const maxCargo = 10000;
 
-    const launchStatus = document.getElementById("launchStatus");
-    document.getElementById("pilotStatus").textContent = `${pilot} Ready`;
-    document.getElementById("copilotStatus").textContent = `${copilot} Ready`;
+	const launchStatus = document.getElementById("launchStatus");
+	document.getElementById("pilotStatus").textContent = `${pilot} Ready`;
+	document.getElementById("copilotStatus").textContent = `${copilot} Ready`;
 
-    let fuelText = "";
-    let  cargoText = "";
+	let fuelText = "";
+	let cargoText = "";
 
 	if (Number(fuel) > minFuelLevel) {
 		fuelText = "The fuel level is sufficient for the journey.";
-    } else {
-        fuelText = "Fuel level is too low for launch.";
-    }
-	if (Number(cargo) <  maxCargo) {
-		cargoText = "Cargo mass low enough for launch."
 	} else {
-        cargoText = "Cargo has too much mass for liftoff to occur.";
-    }
-    document.getElementById("fuelStatus").textContent = fuelText;
-    document.getElementById("cargoStatus").textContent = cargoText;
+		fuelText = "Fuel level is too low for launch.";
+	}
+	if (Number(cargo) < maxCargo) {
+		cargoText = "Cargo mass low enough for launch.";
+	} else {
+		cargoText = "Cargo has too much mass for liftoff to occur.";
+	}
+	document.getElementById("fuelStatus").textContent = fuelText;
+	document.getElementById("cargoStatus").textContent = cargoText;
 
-    if (fuelText === "The fuel level is sufficient for the journey." && cargoText === "Cargo mass low enough for launch.") {
-        launchStatus.textContent = "Shuttle is ready for launch";
-        launchStatus.style.color = "#000000"
-    } else {
-        launchStatus.textContent = "Shuttle not ready for launch";
-        launchStatus.style.color = "#ff0000";
-    }
-    event.preventDefault();
+	if (
+		fuelText === "The fuel level is sufficient for the journey." &&
+		cargoText === "Cargo mass low enough for launch."
+	) {
+		launchStatus.textContent = "Shuttle is ready for launch";
+		launchStatus.style.color = "#008000";
+	} else {
+		launchStatus.textContent = "Shuttle not ready for launch";
+		launchStatus.style.color = "#ff0000";
+	}
+	event.preventDefault();
 }
 
 function loadDestination() {
